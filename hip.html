@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hip Rafter Compound Miter</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1008; --paper: #f5efe3; --wood: #c8873a; --wood-dark: #8b5a1e;
+    --saw: #d64c1a; --rule: #2a6e3f; --faint: #e0d5c0; --mid: #a09070;
+  }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh; padding: 2rem 1rem 4rem;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, var(--faint) 28px),
+      repeating-linear-gradient(90deg, transparent, transparent 27px, var(--faint) 28px);
+    background-size: 28px 28px;
+  }
+  header { text-align: center; margin-bottom: 2rem; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem,7vw,4rem); letter-spacing:.04em; line-height:.95; }
+  h1 span { color: var(--saw); }
+  .tagline { font-size:.8rem; color:var(--mid); letter-spacing:.12em; text-transform:uppercase; margin-top:.4rem; font-weight:600; }
+  .card {
+    background: white; border: 2px solid var(--ink); border-radius: 2px;
+    padding: 1.4rem 1.6rem; max-width: 700px; margin: 0 auto 1.2rem;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing:.08em;
+    color: var(--wood-dark); border-bottom: 2px solid var(--faint);
+    padding-bottom: .4rem; margin-bottom: 1rem;
+  }
+  .pitch-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.8rem; }
+  .pitch-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); margin-bottom:.3rem; }
+  .pitch-input-wrap { display:flex; align-items:center; border:2px solid var(--ink); background:var(--paper); }
+  .pitch-input-wrap input[type=number] {
+    width:65px; padding:.5rem; font-family:'IBM Plex Mono',monospace;
+    font-size:1.5rem; font-weight:600; border:none; background:transparent;
+    color:var(--ink); outline:none; -moz-appearance:textfield;
+  }
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
+  .slash-denom { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; font-weight:600; color:var(--mid); padding-right:.6rem; user-select:none; }
+  .meets { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--saw); text-align:center; padding-top:1.1rem; }
+  .results-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:.8rem; }
+  .result-box { border:2px solid var(--ink); padding:.9rem 1rem; background:var(--paper); }
+  .result-box.primary { background:var(--ink); color:white; }
+  .result-label { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-bottom:.2rem; }
+  .result-value { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; line-height:1; color:var(--saw); }
+  .result-box.primary .result-value { color:#ff8f5e; }
+  .result-formula { font-family:'IBM Plex Mono',monospace; font-size:.7rem; opacity:.5; margin-top:.25rem; }
+  .formula-box {
+    background:var(--rule); color:white; border:2px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink); padding:1.3rem 1.5rem;
+    max-width:700px; margin:0 auto 1.2rem;
+  }
+  .formula-box .card-title { color:#7fffc0; border-color:rgba(255,255,255,.15); }
+  .formula-lines { font-family:'IBM Plex Mono',monospace; font-size:.88rem; line-height:2.1; color:rgba(255,255,255,.9); }
+  .formula-lines .hl { color:#ffe066; font-weight:600; }
+  .formula-lines .dim { opacity:.4; }
+  .formula-lines .result { color:#7fffc0; font-weight:600; font-size:1rem; }
+  .warning { background:#fff3cd; border:2px solid var(--wood); padding:.6rem .9rem; font-size:.8rem; color:var(--wood-dark); margin-top:.5rem; display:none; }
+  .warning.show { display:block; }
+  .note { font-size:.75rem; color:var(--mid); font-style:italic; margin-top:.5rem; line-height:1.5; }
+  .table-wrap { overflow-x:auto; margin-top:.5rem; }
+  table.ref { border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:.73rem; width:100%; min-width:500px; }
+  table.ref th { background:var(--ink); color:white; padding:.4rem .45rem; text-align:center; font-size:.68rem; letter-spacing:.03em; }
+  table.ref th.corner { background:#333; }
+  table.ref td { padding:.28rem .45rem; text-align:center; border:1px solid var(--faint); white-space:nowrap; line-height:1.4; }
+  table.ref td.row-label { background:var(--ink); color:white; font-weight:600; text-align:left; padding-left:.6rem; }
+  table.ref tr.row-hl td:not(.row-label) { background:#fffde0; }
+  table.ref td.active-cell { background:#ffe066 !important; font-weight:700; color:#1a1008; outline:2.5px solid var(--saw); position:relative; z-index:1; }
+  table.ref td.equal-pitch { background:#f0ebe0; color:var(--mid); }
+  table.ref td.invalid { background:#f8f8f8; color:#ccc; }
+  table.ref td.c1 { background:#e8f5e8; }
+  table.ref td.c2 { background:#d0ebd0; }
+  table.ref td.c3 { background:#f5f2d8; }
+  table.ref td.c4 { background:#f0e4b8; }
+  table.ref td.c5 { background:#f0d0a0; }
+  table.ref td.c6 { background:#f0b890; }
+  .legend { display:flex; gap:.8rem; font-size:.68rem; color:var(--mid); margin-top:.5rem; flex-wrap:wrap; align-items:center; }
+  .swatch { width:11px; height:11px; display:inline-block; border:1px solid #bbb; vertical-align:middle; margin-right:2px; }
+  @media(max-width:480px){ .results-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hip Rafter <span>Cheek Cut</span></h1>
+  <p class="tagline">Unequal Pitch · Plumb Face Down on Saw</p>
+</header>
+
+<div class="card">
+  <div class="card-title">Your Two Pitches</div>
+  <div class="pitch-row">
+    <div class="pitch-group">
+      <label>Shallow Roof (p1)</label>
+      <div class="pitch-input-wrap">
+        <input type="number" id="p1" value="4" min="1" max="11">
+        <span class="slash-denom">/12</span>
+      </div>
+    </div>
+    <div class="meets">HIP</div>
+    <div class="pitch-group">
+      <label>Steep Roof (p2)</label>
+      <div class="pitch-input-wrap">
+        <input type="number" id="p2" value="12" min="2" max="12">
+        <span class="slash-denom">/12</span>
+      </div>
+    </div>
+  </div>
+  <div class="warning" id="warn-equal">Pitches must be different — equal pitches don't produce this cut.</div>
+  <div class="warning" id="warn-order">p1 must be the shallower pitch. Swap your values.</div>
+</div>
+
+<div class="card">
+  <div class="card-title">Saw Settings</div>
+  <div class="results-grid">
+    <div class="result-box primary">
+      <div class="result-label">Miter Angle — rotate table</div>
+      <div class="result-value" id="res-miter">—</div>
+      <div class="result-formula" id="formula-miter"></div>
+    </div>
+    <div class="result-box">
+      <div class="result-label">Bevel Angle — tilt blade</div>
+      <div class="result-value" id="res-bevel">—</div>
+      <div class="result-formula" id="formula-bevel"></div>
+    </div>
+  </div>
+  <p class="note">Hip rafter laid <strong>plumb face down</strong> on the saw table for both cuts.</p>
+</div>
+
+<div class="formula-box">
+  <div class="card-title">⚡ The Math</div>
+  <div class="formula-lines" id="formula-display"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">Why It Works</div>
+  <p style="line-height:1.75;font-size:.88rem;">
+    Picture both roof slopes rising from the same point. The shallow roof rises <strong id="exp-p1">4"</strong> over 12", the steep roof rises <strong id="exp-p2">12"</strong> over 12". The vertical gap between them is <strong id="exp-diff">8"</strong>. Your miter is the angle of that shallow rise against the gap — a right triangle with legs <strong id="exp-p1b">4</strong> and <strong id="exp-diffb">8</strong>. That's it.
+  </p>
+  <br>
+  <p style="line-height:1.75;font-size:.88rem;">
+    The bevel is even simpler: it's just the pitch angle of the steeper roof. Tilt the blade to match that plane and the cut face aligns perfectly with it.
+  </p>
+  <p class="note" style="margin-top:.8rem;">This formula is specific to this cut — hip rafter cheek cut, plumb face down. It is NOT the same as a jack rafter side cut formula.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Full Reference Table</div>
+  <p style="font-size:.77rem;color:var(--mid);margin-bottom:.7rem;">
+    <strong>Shallow pitch (p1)</strong> across top &nbsp;·&nbsp; <strong>Steep pitch (p2)</strong> down side &nbsp;·&nbsp; Each cell shows <strong>miter</strong> / <em>bevel</em> &nbsp;·&nbsp; Your selection highlighted yellow.
+  </p>
+  <div class="table-wrap">
+    <table class="ref" id="ref-table"></table>
+  </div>
+  <div class="legend">
+    Miter color scale:
+    <span><span class="swatch" style="background:#d0ebd0"></span>&lt;20°</span>
+    <span><span class="swatch" style="background:#f5f2d8"></span>20–35°</span>
+    <span><span class="swatch" style="background:#f0e4b8"></span>35–50°</span>
+    <span><span class="swatch" style="background:#f0b890"></span>&gt;50°</span>
+  </div>
+  <p class="note">— cells: equal or invalid pitch combinations.</p>
+</div>
+
+<script>
+const p1el = document.getElementById('p1');
+const p2el = document.getElementById('p2');
+
+function toDeg(r){ return r * 180 / Math.PI; }
+function fmt(d){ return d.toFixed(1) + '°'; }
+function calcMiter(p1,p2){ return toDeg(Math.atan(p1/(p2-p1))); }
+function calcBevel(p2){ return toDeg(Math.atan(p2/12)); }
+function colorClass(m){ return m<20?'c2':m<35?'c3':m<50?'c5':'c6'; }
+
+const SHALLOWS = [3,4,5,6,7,8,9,10,11];
+const STEEPS   = [4,5,6,7,8,9,10,11,12];
+
+function buildTable(){
+  const t = document.getElementById('ref-table');
+  let html = '<thead><tr><th class="corner">p2 \\ p1</th>';
+  SHALLOWS.forEach(p => html += '<th>'+p+'/12</th>');
+  html += '</tr></thead><tbody>';
+  STEEPS.forEach(p2 => {
+    html += '<tr id="row-'+p2+'"><td class="row-label">'+p2+'/12</td>';
+    SHALLOWS.forEach(p1 => {
+      const id = 'cell-'+p1+'-'+p2;
+      if(p1 >= p2){
+        html += '<td class="equal-pitch" id="'+id+'">—</td>';
+      } else {
+        const m = calcMiter(p1,p2), b = calcBevel(p2);
+        html += '<td class="'+colorClass(m)+'" id="'+id+'">'+fmt(m)+'<br><span style="font-size:.62rem;opacity:.55;font-style:italic">'+fmt(b)+'</span></td>';
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  t.innerHTML = html;
+}
+
+function compute(){
+  const p1 = parseFloat(p1el.value);
+  const p2 = parseFloat(p2el.value);
+  const wE = document.getElementById('warn-equal');
+  const wO = document.getElementById('warn-order');
+  wE.classList.remove('show'); wO.classList.remove('show');
+
+  if(p1 === p2){ wE.classList.add('show'); clearResults(); return; }
+  if(p1 > p2){  wO.classList.add('show'); clearResults(); return; }
+  if(p2 > 12 || p1 < 1){ clearResults(); return; }
+
+  const miter = calcMiter(p1,p2);
+  const bevel = calcBevel(p2);
+
+  document.getElementById('res-miter').textContent = fmt(miter);
+  document.getElementById('res-bevel').textContent = fmt(bevel);
+  document.getElementById('formula-miter').textContent = 'arctan('+p1+' ÷ '+(p2-p1)+')';
+  document.getElementById('formula-bevel').textContent = 'arctan('+p2+' ÷ 12)';
+
+  document.getElementById('exp-p1').textContent  = p1+'"';
+  document.getElementById('exp-p2').textContent  = p2+'"';
+  document.getElementById('exp-diff').textContent = (p2-p1)+'"';
+  document.getElementById('exp-p1b').textContent  = p1;
+  document.getElementById('exp-diffb').textContent = (p2-p1);
+
+  document.getElementById('formula-display').innerHTML =
+`<span class="dim">// ${p1}/12 shallow · ${p2}/12 steep · plumb face down</span>
+
+<span class="hl">MITER</span>  =  arctan( p1 ÷ (p2 − p1) )
+       =  arctan( ${p1} ÷ (${p2} − ${p1}) )
+       =  arctan( ${p1} ÷ ${p2-p1} )
+       =  arctan( ${(p1/(p2-p1)).toFixed(4)} )
+       =  <span class="result">${fmt(miter)}</span>  ← rotate saw table
+
+<span class="hl">BEVEL</span>  =  arctan( p2 ÷ 12 )
+       =  arctan( ${p2} ÷ 12 )
+       =  arctan( ${(p2/12).toFixed(4)} )
+       =  <span class="result">${fmt(bevel)}</span>  ← tilt blade`;
+
+  // Highlight table
+  document.querySelectorAll('table.ref td').forEach(td => td.classList.remove('active-cell'));
+  document.querySelectorAll('table.ref tr').forEach(tr => tr.classList.remove('row-hl'));
+  const cell = document.getElementById('cell-'+p1+'-'+p2);
+  if(cell){
+    cell.classList.add('active-cell');
+    cell.closest('tr').classList.add('row-hl');
+  }
+}
+
+function clearResults(){
+  document.getElementById('res-miter').textContent = '—';
+  document.getElementById('res-bevel').textContent = '—';
+  document.getElementById('formula-miter').textContent = '';
+  document.getElementById('formula-bevel').textContent = '';
+  document.getElementById('formula-display').innerHTML = '';
+}
+
+buildTable();
+p1el.addEventListener('input', compute);
+p2el.addEventListener('input', compute);
+compute();
+</script>
+
+</body>
+</html>
