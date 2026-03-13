@@ -1,0 +1,132 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hip Rafter Compound Miter</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #1a1008; --paper: #f5efe3; --wood: #c8873a; --wood-dark: #8b5a1e;
+    --saw: #d64c1a; --rule: #2a6e3f; --faint: #e0d5c0; --mid: #a09070;
+  }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh; padding: 2rem 1rem 4rem;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 27px, var(--faint) 28px),
+      repeating-linear-gradient(90deg, transparent, transparent 27px, var(--faint) 28px);
+    background-size: 28px 28px;
+  }
+  header { text-align: center; margin-bottom: 2rem; }
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem,7vw,4rem); letter-spacing:.04em; line-height:.95; }
+  h1 span { color: var(--saw); }
+  .tagline { font-size:.8rem; color:var(--mid); letter-spacing:.12em; text-transform:uppercase; margin-top:.4rem; font-weight:600; }
+  .card {
+    background: white; border: 2px solid var(--ink); border-radius: 2px;
+    padding: 1.4rem 1.6rem; max-width: 700px; margin: 0 auto 1.2rem;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+  .card-title {
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing:.08em;
+    color: var(--wood-dark); border-bottom: 2px solid var(--faint);
+    padding-bottom: .4rem; margin-bottom: 1rem;
+  }
+
+/* MODE TOGGLE */
+.mode-toggle {
+display: flex; max-width: 700px; margin: 0 auto 1.2rem;
+border: 2px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+}
+.mode-btn {
+flex: 1; padding: .75rem .5rem; text-align: center;
+font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: .06em;
+cursor: pointer; border: none; background: white; color: var(--mid);
+line-height: 1.2;
+}
+.mode-btn:first-child { border-right: 2px solid var(--ink); }
+.mode-btn.active { background: var(--ink); color: white; }
+.mode-btn .sub { display: block; font-family: 'IBM Plex Sans', sans-serif; font-size: .7rem; font-weight: 400; opacity: .65; margin-top: .1rem; }
+
+/* PITCH INPUTS */
+.pitch-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.8rem; }
+.pitch-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); margin-bottom:.3rem; }
+.pitch-input-wrap { display:flex; align-items:center; border:2px solid var(--ink); background:var(--paper); }
+.pitch-input-wrap input[type=number] {
+width:65px; padding:.5rem; font-family:'IBM Plex Mono',monospace;
+font-size:1.5rem; font-weight:600; border:none; background:transparent;
+color:var(--ink); outline:none; -moz-appearance:textfield;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
+.slash-denom { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; font-weight:600; color:var(--mid); padding-right:.6rem; user-select:none; }
+
+/* FIELD INPUTS */
+.angle-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.8rem; }
+.angle-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); margin-bottom:.3rem; }
+.angle-input-wrap { display:flex; align-items:center; border:2px solid var(--saw); background:var(--paper); }
+.angle-input-wrap input[type=number] {
+width:72px; padding:.5rem; font-family:'IBM Plex Mono',monospace;
+font-size:1.5rem; font-weight:600; border:none; background:transparent;
+color:var(--ink); outline:none; -moz-appearance:textfield;
+}
+.deg-suffix { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; font-weight:600; color:var(--mid); padding-right:.6rem; user-select:none; }
+.field-badge { display:inline-block; background:var(--saw); color:white; font-size:.6rem; font-weight:700; letter-spacing:.08em; padding:.12rem .4rem; margin-left:.4rem; vertical-align:middle; }
+
+.meets { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--saw); text-align:center; padding-top:1.1rem; }
+
+/* RESULTS */
+.results-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:.8rem; }
+.result-box { border:2px solid var(--ink); padding:.9rem 1rem; background:var(--paper); }
+.result-box.primary { background:var(--ink); color:white; }
+.result-label { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-bottom:.2rem; }
+.result-value { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; line-height:1; color:var(--saw); }
+.result-box.primary .result-value { color:#ff8f5e; }
+.result-formula { font-family:'IBM Plex Mono',monospace; font-size:.7rem; opacity:.5; margin-top:.25rem; }
+
+.formula-box {
+background:var(--rule); color:white; border:2px solid var(--ink);
+box-shadow:4px 4px 0 var(--ink); padding:1.3rem 1.5rem;
+max-width:700px; margin:0 auto 1.2rem;
+}
+.formula-box .card-title { color:#7fffc0; border-color:rgba(255,255,255,.15); }
+.formula-lines { font-family:'IBM Plex Mono',monospace; font-size:.88rem; line-height:2.1; color:rgba(255,255,255,.9); white-space:pre-wrap; }
+.formula-lines .hl { color:#ffe066; font-weight:600; }
+.formula-lines .dim { opacity:.4; }
+.formula-lines .result { color:#7fffc0; font-weight:600; font-size:1rem; }
+
+.warning { background:#fff3cd; border:2px solid var(--wood); padding:.6rem .9rem; font-size:.8rem; color:var(--wood-dark); margin-top:.5rem; display:none; }
+.warning.show { display:block; }
+.note { font-size:.75rem; color:var(--mid); font-style:italic; margin-top:.5rem; line-height:1.5; }
+
+@media(max-width:480px){ .results-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Hip Rafter <span>Cheek Cut</span></h1>
+  <p class="tagline">Unequal Pitch - Plumb Face Down on Saw</p>
+</header>
+
+<div class="card">
+<div class="card-title">About</div>
+<p>This calculator helps determine the miter and bevel for unequal pitch hip rafters when the rafter is laid plumb-face-down on the saw.</p>
+</div>
+
+<script>
+function toDeg(r){ return r * 180 / Math.PI; }
+function calc(p1,p2){
+ return {
+  miter: toDeg(Math.atan(p1/(p2-p1))),
+  bevel: toDeg(Math.atan(p2/12))
+ }
+}
+console.log(calc(4,12));
+</script>
+
+</body>
+</html>
