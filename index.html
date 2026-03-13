@@ -7,86 +7,132 @@
 <title>Hip Rafter Compound Miter</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root {
-    --ink: #1a1008; --paper: #f5efe3; --wood: #c8873a; --wood-dark: #8b5a1e;
-    --saw: #d64c1a; --rule: #2a6e3f; --faint: #e0d5c0; --mid: #a09070;
+    --ink:#1a1008; --paper:#f5efe3; --wood:#c8873a; --wood-dark:#8b5a1e;
+    --saw:#d64c1a; --rule:#2a6e3f; --faint:#e0d5c0; --mid:#a09070;
   }
   body {
-    background: var(--paper); color: var(--ink);
-    font-family: 'IBM Plex Sans', sans-serif;
-    min-height: 100vh; padding: 2rem 1rem 4rem;
+    background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    min-height:100vh; padding:2rem 1rem 4rem;
     background-image:
-      repeating-linear-gradient(0deg, transparent, transparent 27px, var(--faint) 28px),
-      repeating-linear-gradient(90deg, transparent, transparent 27px, var(--faint) 28px);
-    background-size: 28px 28px;
+      repeating-linear-gradient(0deg,transparent,transparent 27px,var(--faint) 28px),
+      repeating-linear-gradient(90deg,transparent,transparent 27px,var(--faint) 28px);
+    background-size:28px 28px;
   }
-  header { text-align: center; margin-bottom: 2rem; }
-  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.2rem,7vw,4rem); letter-spacing:.04em; line-height:.95; }
-  h1 span { color: var(--saw); }
+  header { text-align:center; margin-bottom:1.6rem; }
+  h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.2rem,7vw,4rem); letter-spacing:.04em; line-height:.95; }
+  h1 span { color:var(--saw); }
   .tagline { font-size:.8rem; color:var(--mid); letter-spacing:.12em; text-transform:uppercase; margin-top:.4rem; font-weight:600; }
-  .card {
-    background: white; border: 2px solid var(--ink); border-radius: 2px;
-    padding: 1.4rem 1.6rem; max-width: 700px; margin: 0 auto 1.2rem;
-    box-shadow: 4px 4px 0 var(--ink);
-  }
-  .card-title {
-    font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing:.08em;
-    color: var(--wood-dark); border-bottom: 2px solid var(--faint);
-    padding-bottom: .4rem; margin-bottom: 1rem;
-  }
-  .pitch-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.8rem; }
-  .pitch-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mid); margin-bottom:.3rem; }
-  .pitch-input-wrap { display:flex; align-items:center; border:2px solid var(--ink); background:var(--paper); }
-  .pitch-input-wrap input[type=number] {
-    width:65px; padding:.5rem; font-family:'IBM Plex Mono',monospace;
-    font-size:1.5rem; font-weight:600; border:none; background:transparent;
-    color:var(--ink); outline:none; -moz-appearance:textfield;
-  }
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button { -webkit-appearance:none; }
-  .slash-denom { font-family:'IBM Plex Mono',monospace; font-size:1.1rem; font-weight:600; color:var(--mid); padding-right:.6rem; user-select:none; }
-  .meets { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; color:var(--saw); text-align:center; padding-top:1.1rem; }
-  .results-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:.8rem; }
-  .result-box { border:2px solid var(--ink); padding:.9rem 1rem; background:var(--paper); }
-  .result-box.primary { background:var(--ink); color:white; }
-  .result-label { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-bottom:.2rem; }
-  .result-value { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; line-height:1; color:var(--saw); }
-  .result-box.primary .result-value { color:#ff8f5e; }
-  .result-formula { font-family:'IBM Plex Mono',monospace; font-size:.7rem; opacity:.5; margin-top:.25rem; }
-  .formula-box {
-    background:var(--rule); color:white; border:2px solid var(--ink);
-    box-shadow:4px 4px 0 var(--ink); padding:1.3rem 1.5rem;
-    max-width:700px; margin:0 auto 1.2rem;
-  }
-  .formula-box .card-title { color:#7fffc0; border-color:rgba(255,255,255,.15); }
-  .formula-lines { font-family:'IBM Plex Mono',monospace; font-size:.88rem; line-height:2.1; color:rgba(255,255,255,.9); }
-  .formula-lines .hl { color:#ffe066; font-weight:600; }
-  .formula-lines .dim { opacity:.4; }
-  .formula-lines .result { color:#7fffc0; font-weight:600; font-size:1rem; }
-  .warning { background:#fff3cd; border:2px solid var(--wood); padding:.6rem .9rem; font-size:.8rem; color:var(--wood-dark); margin-top:.5rem; display:none; }
-  .warning.show { display:block; }
-  .note { font-size:.75rem; color:var(--mid); font-style:italic; margin-top:.5rem; line-height:1.5; }
-  .table-wrap { overflow-x:auto; margin-top:.5rem; }
-  table.ref { border-collapse:collapse; font-family:'IBM Plex Mono',monospace; font-size:.73rem; width:100%; min-width:500px; }
-  table.ref th { background:var(--ink); color:white; padding:.4rem .45rem; text-align:center; font-size:.68rem; letter-spacing:.03em; }
-  table.ref th.corner { background:#333; }
-  table.ref td { padding:.28rem .45rem; text-align:center; border:1px solid var(--faint); white-space:nowrap; line-height:1.4; }
-  table.ref td.row-label { background:var(--ink); color:white; font-weight:600; text-align:left; padding-left:.6rem; }
-  table.ref tr.row-hl td:not(.row-label) { background:#fffde0; }
-  table.ref td.active-cell { background:#ffe066 !important; font-weight:700; color:#1a1008; outline:2.5px solid var(--saw); position:relative; z-index:1; }
-  table.ref td.equal-pitch { background:#f0ebe0; color:var(--mid); }
-  table.ref td.invalid { background:#f8f8f8; color:#ccc; }
-  table.ref td.c1 { background:#e8f5e8; }
-  table.ref td.c2 { background:#d0ebd0; }
-  table.ref td.c3 { background:#f5f2d8; }
-  table.ref td.c4 { background:#f0e4b8; }
-  table.ref td.c5 { background:#f0d0a0; }
-  table.ref td.c6 { background:#f0b890; }
-  .legend { display:flex; gap:.8rem; font-size:.68rem; color:var(--mid); margin-top:.5rem; flex-wrap:wrap; align-items:center; }
-  .swatch { width:11px; height:11px; display:inline-block; border:1px solid #bbb; vertical-align:middle; margin-right:2px; }
-  @media(max-width:480px){ .results-grid{grid-template-columns:1fr;} }
+
+.card {
+background:white; border:2px solid var(–ink); border-radius:2px;
+padding:1.4rem 1.6rem; max-width:700px; margin:0 auto 1.2rem;
+box-shadow:4px 4px 0 var(–ink);
+}
+.card-title {
+font-family:‘Bebas Neue’,sans-serif; font-size:1.2rem; letter-spacing:.08em;
+color:var(–wood-dark); border-bottom:2px solid var(–faint);
+padding-bottom:.4rem; margin-bottom:1rem;
+}
+
+/* MODE TOGGLE */
+.mode-toggle {
+display:flex; max-width:700px; margin:0 auto 1.2rem;
+border:2px solid var(–ink); box-shadow:4px 4px 0 var(–ink); overflow:hidden;
+}
+.mode-btn {
+flex:1; padding:.75rem .5rem; font-family:‘Bebas Neue’,sans-serif;
+font-size:1.05rem; letter-spacing:.06em; cursor:pointer;
+border:none; background:white; color:var(–mid);
+transition:background .15s, color .15s; line-height:1.2;
+}
+.mode-btn.active { background:var(–ink); color:white; }
+.mode-btn:first-child { border-right:2px solid var(–ink); }
+
+/* PITCH MODE */
+.pitch-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.8rem; }
+.pitch-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(–mid); margin-bottom:.3rem; }
+.pitch-input-wrap { display:flex; align-items:center; border:2px solid var(–ink); background:var(–paper); }
+.pitch-input-wrap input[type=number] {
+width:65px; padding:.5rem; font-family:‘IBM Plex Mono’,monospace;
+font-size:1.5rem; font-weight:600; border:none; background:transparent;
+color:var(–ink); outline:none; -moz-appearance:textfield;
+}
+.slash-denom { font-family:‘IBM Plex Mono’,monospace; font-size:1.1rem; font-weight:600; color:var(–mid); padding-right:.6rem; user-select:none; }
+
+/* FIELD MODE */
+.angle-row { display:grid; grid-template-columns:1fr auto 1fr; gap:1rem; align-items:center; margin-bottom:.5rem; }
+.angle-group label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(–mid); margin-bottom:.3rem; }
+.angle-input-wrap { display:flex; align-items:center; border:2px solid var(–saw); background:var(–paper); }
+.angle-input-wrap input[type=number] {
+width:72px; padding:.5rem; font-family:‘IBM Plex Mono’,monospace;
+font-size:1.4rem; font-weight:600; border:none; background:transparent;
+color:var(–ink); outline:none; -moz-appearance:textfield;
+}
+.deg-suffix { font-family:‘IBM Plex Mono’,monospace; font-size:1.1rem; font-weight:600; color:var(–mid); padding-right:.6rem; }
+.field-badge {
+display:inline-block; background:var(–saw); color:white;
+font-size:.6rem; font-weight:700; letter-spacing:.08em;
+padding:.12rem .35rem; margin-left:.35rem; vertical-align:middle;
+font-family:‘IBM Plex Sans’,sans-serif;
+}
+
+.meets { font-family:‘Bebas Neue’,sans-serif; font-size:1.5rem; color:var(–saw); text-align:center; padding-top:1.1rem; }
+
+/* RESULTS */
+.results-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:.8rem; }
+.result-box { border:2px solid var(–ink); padding:.9rem 1rem; background:var(–paper); }
+.result-box.primary { background:var(–ink); color:white; }
+.result-label { font-size:.65rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase; opacity:.55; margin-bottom:.2rem; }
+.result-value { font-family:‘Bebas Neue’,sans-serif; font-size:3.2rem; line-height:1; color:var(–saw); }
+.result-box.primary .result-value { color:#ff8f5e; }
+.result-formula { font-family:‘IBM Plex Mono’,monospace; font-size:.7rem; opacity:.5; margin-top:.25rem; }
+
+/* FORMULA BOX */
+.formula-box {
+background:var(–rule); color:white; border:2px solid var(–ink);
+box-shadow:4px 4px 0 var(–ink); padding:1.3rem 1.5rem;
+max-width:700px; margin:0 auto 1.2rem;
+}
+.formula-box .card-title { color:#7fffc0; border-color:rgba(255,255,255,.15); }
+.formula-lines { font-family:‘IBM Plex Mono’,monospace; font-size:.86rem; line-height:2.1; color:rgba(255,255,255,.9); }
+.formula-lines .hl { color:#ffe066; font-weight:600; }
+.formula-lines .dim { opacity:.4; }
+.formula-lines .result { color:#7fffc0; font-weight:600; font-size:1rem; }
+
+.warning { background:#fff3cd; border:2px solid var(–wood); padding:.6rem .9rem; font-size:.8rem; color:var(–wood-dark); margin-top:.5rem; display:none; }
+.warning.show { display:block; }
+.note { font-size:.75rem; color:var(–mid); font-style:italic; margin-top:.5rem; line-height:1.5; }
+
+/* TABLE */
+.table-wrap { overflow-x:auto; margin-top:.5rem; }
+table.ref { border-collapse:collapse; font-family:‘IBM Plex Mono’,monospace; font-size:.73rem; width:100%; min-width:500px; }
+table.ref th { background:var(–ink); color:white; padding:.4rem .45rem; text-align:center; font-size:.68rem; letter-spacing:.03em; }
+table.ref th.corner { background:#333; }
+table.ref td { padding:.28rem .45rem; text-align:center; border:1px solid var(–faint); white-space:nowrap; line-height:1.4; }
+table.ref td.row-label { background:var(–ink); color:white; font-weight:600; text-align:left; padding-left:.6rem; }
+table.ref tr.row-hl td:not(.row-label) { background:#fffde0; }
+table.ref td.active-cell { background:#ffe066 !important; font-weight:700; color:#1a1008; outline:2.5px solid var(–saw); position:relative; z-index:1; }
+table.ref td.equal-pitch { background:#f0ebe0; color:var(–mid); }
+table.ref td.c2 { background:#d0ebd0; }
+table.ref td.c3 { background:#f5f2d8; }
+table.ref td.c5 { background:#f0d0a0; }
+table.ref td.c6 { background:#f0b890; }
+.legend { display:flex; gap:.8rem; font-size:.68rem; color:var(–mid); margin-top:.5rem; flex-wrap:wrap; align-items:center; }
+.swatch { width:11px; height:11px; display:inline-block; border:1px solid #bbb; vertical-align:middle; margin-right:2px; }
+
+/* hide/show sections */
+.pitch-section { display:block; }
+.field-section  { display:none; }
+body.field-mode .pitch-section { display:none; }
+body.field-mode .field-section  { display:block; }
+body.field-mode .hide-in-field  { display:none; }
+
+@media(max-width:480px){ .results-grid{grid-template-columns:1fr;} }
 </style>
+
 </head>
 <body>
 
@@ -95,7 +141,20 @@
   <p class="tagline">Unequal Pitch · Plumb Face Down on Saw</p>
 </header>
 
-<div class="card">
+<!-- MODE TOGGLE -->
+
+<div class="mode-toggle">
+  <button class="mode-btn active" id="btn-pitch" onclick="setMode('pitch')">
+    📐 Pitch Mode<br><span style="font-size:.7rem;opacity:.6;font-family:'IBM Plex Sans',sans-serif">Enter rise/12</span>
+  </button>
+  <button class="mode-btn" id="btn-field" onclick="setMode('field')">
+    🔧 Field Override<br><span style="font-size:.7rem;opacity:.6;font-family:'IBM Plex Sans',sans-serif">Enter actual degrees</span>
+  </button>
+</div>
+
+<!-- PITCH MODE INPUT -->
+
+<div class="card pitch-section">
   <div class="card-title">Your Two Pitches</div>
   <div class="pitch-row">
     <div class="pitch-group">
@@ -118,6 +177,39 @@
   <div class="warning" id="warn-order">p1 must be the shallower pitch. Swap your values.</div>
 </div>
 
+<!-- FIELD OVERRIDE INPUT -->
+
+<div class="card field-section">
+  <div class="card-title">Actual Measured Angles <span class="field-badge">FIELD OVERRIDE</span></div>
+  <p style="font-size:.8rem;color:var(--mid);margin-bottom:1rem;line-height:1.6;">
+    Framing came out a few degrees off? Enter the <strong>actual slope angles</strong> you measured — not the nominal pitch. Use a digital angle finder or level app on the roof surface.
+  </p>
+  <div class="angle-row">
+    <div class="angle-group">
+      <label>Shallow Angle (°)</label>
+      <div class="angle-input-wrap">
+        <input type="number" id="a1" value="16.2" min="0.1" max="89" step="0.1">
+        <span class="deg-suffix">°</span>
+      </div>
+    </div>
+    <div class="meets">HIP</div>
+    <div class="angle-group">
+      <label>Steep Angle (°)</label>
+      <div class="angle-input-wrap">
+        <input type="number" id="a2" value="43.1" min="0.1" max="89" step="0.1">
+        <span class="deg-suffix">°</span>
+      </div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:.3rem;">
+    Nominal 4/12 = 18.4° · 6/12 = 26.6° · 7/12 = 30.3° · 8/12 = 33.7° · 10/12 = 39.8° · 12/12 = 45.0°
+  </p>
+  <div class="warning" id="warn-field-order">Shallow angle must be less than steep angle. Swap your values.</div>
+  <div class="warning" id="warn-field-equal">Angles must be different.</div>
+</div>
+
+<!-- RESULTS -->
+
 <div class="card">
   <div class="card-title">Saw Settings</div>
   <div class="results-grid">
@@ -132,15 +224,19 @@
       <div class="result-formula" id="formula-bevel"></div>
     </div>
   </div>
-  <p class="note">Hip rafter laid <strong>plumb face down</strong> on the saw table for both cuts.</p>
+  <p class="note">Hip rafter laid <strong>plumb face down</strong> on the saw table.</p>
 </div>
+
+<!-- FORMULA -->
 
 <div class="formula-box">
   <div class="card-title">⚡ The Math</div>
   <div class="formula-lines" id="formula-display"></div>
 </div>
 
-<div class="card">
+<!-- WHY IT WORKS -->
+
+<div class="card hide-in-field">
   <div class="card-title">Why It Works</div>
   <p style="line-height:1.75;font-size:.88rem;">
     Picture both roof slopes rising from the same point. The shallow roof rises <strong id="exp-p1">4"</strong> over 12", the steep roof rises <strong id="exp-p2">12"</strong> over 12". The vertical gap between them is <strong id="exp-diff">8"</strong>. Your miter is the angle of that shallow rise against the gap — a right triangle with legs <strong id="exp-p1b">4</strong> and <strong id="exp-diffb">8</strong>. That's it.
@@ -152,10 +248,12 @@
   <p class="note" style="margin-top:.8rem;">This formula is specific to this cut — hip rafter cheek cut, plumb face down. It is NOT the same as a jack rafter side cut formula.</p>
 </div>
 
-<div class="card">
+<!-- REFERENCE TABLE -->
+
+<div class="card hide-in-field">
   <div class="card-title">Full Reference Table</div>
   <p style="font-size:.77rem;color:var(--mid);margin-bottom:.7rem;">
-    <strong>Shallow pitch (p1)</strong> across top &nbsp;·&nbsp; <strong>Steep pitch (p2)</strong> down side &nbsp;·&nbsp; Each cell shows <strong>miter</strong> / <em>bevel</em> &nbsp;·&nbsp; Your selection highlighted yellow.
+    <strong>Shallow pitch (p1)</strong> across top &nbsp;·&nbsp; <strong>Steep pitch (p2)</strong> down side &nbsp;·&nbsp; Each cell: <strong>miter</strong> / <em style="opacity:.6">bevel</em>
   </p>
   <div class="table-wrap">
     <table class="ref" id="ref-table"></table>
@@ -164,65 +262,59 @@
     Miter color scale:
     <span><span class="swatch" style="background:#d0ebd0"></span>&lt;20°</span>
     <span><span class="swatch" style="background:#f5f2d8"></span>20–35°</span>
-    <span><span class="swatch" style="background:#f0e4b8"></span>35–50°</span>
+    <span><span class="swatch" style="background:#f0d0a0"></span>35–50°</span>
     <span><span class="swatch" style="background:#f0b890"></span>&gt;50°</span>
   </div>
   <p class="note">— cells: equal or invalid pitch combinations.</p>
 </div>
 
 <script>
+// ── helpers ──────────────────────────────────────────────────────────────
+function toDeg(r){ return r*180/Math.PI; }
+function toRad(d){ return d*Math.PI/180; }
+function fmt(d){ return d.toFixed(1)+'°'; }
+function colorClass(m){ return m<20?'c2':m<35?'c3':m<50?'c5':'c6'; }
+
+// ── core formulas (work in tan-space so field mode can feed raw tan values) ──
+// tan(miter) = tan(shallow) / (tan(steep) - tan(shallow))
+// bevel      = steep angle directly
+function calcFromTans(t1, t2){
+  const miter = toDeg(Math.atan(t1 / (t2 - t1)));
+  const bevel = toDeg(Math.atan(t2));
+  return { miter, bevel };
+}
+
+// ── mode ─────────────────────────────────────────────────────────────────
+let mode = 'pitch';
+function setMode(m){
+  mode = m;
+  document.body.classList.toggle('field-mode', m === 'field');
+  document.getElementById('btn-pitch').classList.toggle('active', m === 'pitch');
+  document.getElementById('btn-field').classList.toggle('active', m === 'field');
+  compute();
+}
+
+// ── pitch mode ────────────────────────────────────────────────────────────
 const p1el = document.getElementById('p1');
 const p2el = document.getElementById('p2');
 
-function toDeg(r){ return r * 180 / Math.PI; }
-function fmt(d){ return d.toFixed(1) + '°'; }
-function calcMiter(p1,p2){ return toDeg(Math.atan(p1/(p2-p1))); }
-function calcBevel(p2){ return toDeg(Math.atan(p2/12)); }
-function colorClass(m){ return m<20?'c2':m<35?'c3':m<50?'c5':'c6'; }
-
-const SHALLOWS = [3,4,5,6,7,8,9,10,11];
-const STEEPS   = [4,5,6,7,8,9,10,11,12];
-
-function buildTable(){
-  const t = document.getElementById('ref-table');
-  let html = '<thead><tr><th class="corner">p2 \\ p1</th>';
-  SHALLOWS.forEach(p => html += '<th>'+p+'/12</th>');
-  html += '</tr></thead><tbody>';
-  STEEPS.forEach(p2 => {
-    html += '<tr id="row-'+p2+'"><td class="row-label">'+p2+'/12</td>';
-    SHALLOWS.forEach(p1 => {
-      const id = 'cell-'+p1+'-'+p2;
-      if(p1 >= p2){
-        html += '<td class="equal-pitch" id="'+id+'">—</td>';
-      } else {
-        const m = calcMiter(p1,p2), b = calcBevel(p2);
-        html += '<td class="'+colorClass(m)+'" id="'+id+'">'+fmt(m)+'<br><span style="font-size:.62rem;opacity:.55;font-style:italic">'+fmt(b)+'</span></td>';
-      }
-    });
-    html += '</tr>';
-  });
-  html += '</tbody>';
-  t.innerHTML = html;
-}
-
-function compute(){
+function computePitch(){
   const p1 = parseFloat(p1el.value);
   const p2 = parseFloat(p2el.value);
   const wE = document.getElementById('warn-equal');
   const wO = document.getElementById('warn-order');
   wE.classList.remove('show'); wO.classList.remove('show');
 
-  if(p1 === p2){ wE.classList.add('show'); clearResults(); return; }
-  if(p1 > p2){  wO.classList.add('show'); clearResults(); return; }
-  if(p2 > 12 || p1 < 1){ clearResults(); return; }
+  if(isNaN(p1)||isNaN(p2)){ clearResults(); return; }
+  if(p1===p2){ wE.classList.add('show'); clearResults(); return; }
+  if(p1>p2){  wO.classList.add('show'); clearResults(); return; }
 
-  const miter = calcMiter(p1,p2);
-  const bevel = calcBevel(p2);
+  const t1 = p1/12, t2 = p2/12;
+  const {miter, bevel} = calcFromTans(t1, t2);
 
-  document.getElementById('res-miter').textContent = fmt(miter);
-  document.getElementById('res-bevel').textContent = fmt(bevel);
-  document.getElementById('formula-miter').textContent = 'arctan('+p1+' ÷ '+(p2-p1)+')';
-  document.getElementById('formula-bevel').textContent = 'arctan('+p2+' ÷ 12)';
+  showResults(miter, bevel,
+    'arctan('+p1+' ÷ '+(p2-p1)+')',
+    'arctan('+p2+' ÷ 12)');
 
   document.getElementById('exp-p1').textContent  = p1+'"';
   document.getElementById('exp-p2').textContent  = p2+'"';
@@ -234,9 +326,8 @@ function compute(){
 `<span class="dim">// ${p1}/12 shallow · ${p2}/12 steep · plumb face down</span>
 
 <span class="hl">MITER</span>  =  arctan( p1 ÷ (p2 − p1) )
-       =  arctan( ${p1} ÷ (${p2} − ${p1}) )
        =  arctan( ${p1} ÷ ${p2-p1} )
-       =  arctan( ${(p1/(p2-p1)).toFixed(4)} )
+       =  arctan( ${(t1/(t2-t1)).toFixed(4)} )
        =  <span class="result">${fmt(miter)}</span>  ← rotate saw table
 
 <span class="hl">BEVEL</span>  =  arctan( p2 ÷ 12 )
@@ -244,14 +335,57 @@ function compute(){
        =  arctan( ${(p2/12).toFixed(4)} )
        =  <span class="result">${fmt(bevel)}</span>  ← tilt blade`;
 
-  // Highlight table
-  document.querySelectorAll('table.ref td').forEach(td => td.classList.remove('active-cell'));
-  document.querySelectorAll('table.ref tr').forEach(tr => tr.classList.remove('row-hl'));
-  const cell = document.getElementById('cell-'+p1+'-'+p2);
-  if(cell){
-    cell.classList.add('active-cell');
-    cell.closest('tr').classList.add('row-hl');
-  }
+  highlightTable(p1, p2);
+}
+
+// ── field override mode ───────────────────────────────────────────────────
+const a1el = document.getElementById('a1');
+const a2el = document.getElementById('a2');
+
+function computeField(){
+  const a1 = parseFloat(a1el.value);
+  const a2 = parseFloat(a2el.value);
+  const wO = document.getElementById('warn-field-order');
+  const wE = document.getElementById('warn-field-equal');
+  wO.classList.remove('show'); wE.classList.remove('show');
+
+  if(isNaN(a1)||isNaN(a2)){ clearResults(); return; }
+  if(a1===a2){ wE.classList.add('show'); clearResults(); return; }
+  if(a1>a2){  wO.classList.add('show'); clearResults(); return; }
+
+  const t1 = Math.tan(toRad(a1));
+  const t2 = Math.tan(toRad(a2));
+  const {miter, bevel} = calcFromTans(t1, t2);
+
+  showResults(miter, bevel,
+    'arctan(tan('+a1+'°) ÷ (tan('+a2+'°)−tan('+a1+'°)))',
+    'steep angle = '+a2+'°');
+
+  document.getElementById('formula-display').innerHTML =
+`<span class="dim">// Actual measured: ${a1}° shallow · ${a2}° steep</span>
+<span class="dim">// (Nominal would be ~${pitchFromAngle(a1)} · ~${pitchFromAngle(a2)})</span>
+
+<span class="hl">MITER</span>  =  arctan( tan(a1) ÷ (tan(a2) − tan(a1)) )
+       =  arctan( ${t1.toFixed(4)} ÷ (${t2.toFixed(4)} − ${t1.toFixed(4)}) )
+       =  arctan( ${t1.toFixed(4)} ÷ ${(t2-t1).toFixed(4)} )
+       =  arctan( ${(t1/(t2-t1)).toFixed(4)} )
+       =  <span class="result">${fmt(miter)}</span>  ← rotate saw table
+
+<span class="hl">BEVEL</span>  =  steep angle directly
+       =  <span class="result">${fmt(bevel)}</span>  ← tilt blade`;
+}
+
+function pitchFromAngle(deg){
+  const rise = Math.tan(toRad(deg)) * 12;
+  return rise.toFixed(1)+'/12';
+}
+
+// ── shared ────────────────────────────────────────────────────────────────
+function showResults(miter, bevel, fMiter, fBevel){
+  document.getElementById('res-miter').textContent = fmt(miter);
+  document.getElementById('res-bevel').textContent = fmt(bevel);
+  document.getElementById('formula-miter').textContent = fMiter;
+  document.getElementById('formula-bevel').textContent = fBevel;
 }
 
 function clearResults(){
@@ -262,9 +396,50 @@ function clearResults(){
   document.getElementById('formula-display').innerHTML = '';
 }
 
+function compute(){
+  if(mode==='pitch') computePitch();
+  else computeField();
+}
+
+// ── reference table ───────────────────────────────────────────────────────
+const SHALLOWS=[3,4,5,6,7,8,9,10,11];
+const STEEPS  =[4,5,6,7,8,9,10,11,12];
+
+function buildTable(){
+  const t=document.getElementById('ref-table');
+  let html='<thead><tr><th class="corner">p2 \\ p1</th>';
+  SHALLOWS.forEach(p=>html+='<th>'+p+'/12</th>');
+  html+='</tr></thead><tbody>';
+  STEEPS.forEach(p2=>{
+    html+='<tr id="row-'+p2+'"><td class="row-label">'+p2+'/12</td>';
+    SHALLOWS.forEach(p1=>{
+      const id='cell-'+p1+'-'+p2;
+      if(p1>=p2){
+        html+='<td class="equal-pitch" id="'+id+'">—</td>';
+      } else {
+        const {miter:m,bevel:b}=calcFromTans(p1/12,p2/12);
+        html+='<td class="'+colorClass(m)+'" id="'+id+'">'+fmt(m)+'<br><span style="font-size:.62rem;opacity:.55;font-style:italic">'+fmt(b)+'</span></td>';
+      }
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  t.innerHTML=html;
+}
+
+function highlightTable(p1,p2){
+  document.querySelectorAll('table.ref td').forEach(td=>td.classList.remove('active-cell'));
+  document.querySelectorAll('table.ref tr').forEach(tr=>tr.classList.remove('row-hl'));
+  const cell=document.getElementById('cell-'+p1+'-'+p2);
+  if(cell){ cell.classList.add('active-cell'); cell.closest('tr').classList.add('row-hl'); }
+}
+
+// ── init ──────────────────────────────────────────────────────────────────
 buildTable();
 p1el.addEventListener('input', compute);
 p2el.addEventListener('input', compute);
+a1el.addEventListener('input', compute);
+a2el.addEventListener('input', compute);
 compute();
 </script>
 
